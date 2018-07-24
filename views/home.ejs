@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AJAX INTRO</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <style>
+            #buttons ,#xhr , #fetch , #jquery, #axios{
+                margin: 20px 20px;
+                border-radius: 30px;
+                padding: 30px;
+
+            }
+            p{
+                font-size: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="buttons">
+            <button id="xhr" type="button" class="btn btn-warning">XHR</button>
+            <button id="fetch" type="button" class="btn btn-success">FETCH</button>
+            <button id="jquery" type="button" class="btn btn-primary">JQUERY</button>
+            <button id="axios" type="button" class="btn btn-danger">AXİOS</button>
+            <p> <strong> Type: </strong> <p id="type"></p> </p>
+            <p> <strong> Text: </strong> <p id="text"></p> </p>
+        </div>
+        <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+
+        
+        
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            
+
+            var url= "https://api.github.com/users/ugurkirmaci"
+            var xhrbtn = document.querySelector("#xhr");
+            var fetchbtn = document.querySelector("#fetch");
+            var axiosbtn = document.querySelector("#axios");
+            var text = document.querySelector("#text");
+            var type = document.querySelector("#type");
+            // XHR Request -- En uzun Syntax
+            xhrbtn.addEventListener("click", function(){
+                var XHR = new XMLHttpRequest();
+                
+                XHR.onreadystatechange = function(){
+                    if(XHR.readyState == 4 && XHR.status == 200){
+                        console.log(XHR.responseText);
+                        type.innerText = typeof(XHR.responseText);
+                        var  jsonFormattedData = JSON.parse(XHR.responseText);
+                        text.innerText = jsonFormattedData.login;
+                    }
+                }    
+
+                XHR.open("GET",url);
+                XHR.send();
+            });
+
+            //Fetch -- IE calıimayabilir.(inthernet expoler)
+            //Fetch'de ayrıca javascript nesnesi alıyoruz, consoledan...
+            fetchbtn.addEventListener("click", function(){
+                fetch(url)
+                .then(function(req){
+                    req.json().then(function(data){
+                        console.log(data);
+                        type.innerText = typeof(data);
+                        text.innerText = data.login;
+                    });
+                })
+                //Herhangi bir hata olmayi kontrol etmesi icin kullanilir.
+                .catch(function(){
+                    alert("ERROR");
+                })
+            });
+
+
+            //jQuery - Temiz ve kisa bir Syntax sadece Ajax icin degil??
+
+            $("#jquery").click(function(){
+                $.getJSON(url)
+                .done(function(data){
+                    console.log(data);
+                    $("#type").text(typeof(data));
+                    $("#text").text(data.login);
+
+                });
+            });
+
+            //Axios -- Yine Temiz ve kisa bir Syntax jQuery ve benzeri ama sadece bu olay icin kullanilir.
+            
+            axiosbtn.addEventListener("click", function(){
+                axios.get(url)
+                .then(function(res){
+                    console.log(res.data);
+                    type.innerText = typeof(res.data);
+                    text.innerText = res.data.login;
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            });
+
+
+
+        </script>
+    </body>
+</html>

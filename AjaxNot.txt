@@ -1,0 +1,7 @@
+AJAX bir geliþtiricinin hayalidir, bir kütüphanedir.Çünkü yapabilecekleriniz:
+
+* Sayfayý yeniden yüklemeden bir web sayfasýný güncelle
+* Bir sunucudan veri isteme - sayfa yüklendikten sonra
+* Bir sunucudan veri alma - sayfa yüklendikten sonra
+* Verileri bir sunucuya gönder - arka planda
+
